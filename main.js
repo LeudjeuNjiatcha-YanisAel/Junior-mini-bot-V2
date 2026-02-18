@@ -67,6 +67,7 @@ const hideTagCommand = require('./commands/hidetag');
 const jokeCommand = require('./commands/joke');
 const quoteCommand = require('./commands/quote');
 const factCommand = require('./commands/fact');
+const weatherCommand = require('./commands/weather');
 const newsCommand = require('./commands/news');
 const kickCommand = require('./commands/kick');
 const simageCommand = require('./commands/simage');
@@ -700,31 +701,9 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage === '*topmembers':
                 topMembers(sock, chatId, isGroup);
                 break;
-            case userMessage.startsWith('*hangman'):
-                startHangman(sock, chatId);
-                break;
             case userMessage.startsWith('*youtube'):
                 const youtubeCommand = require('./commands/youtube');
                 await youtubeCommand(sock, chatId,senderId,userMessage);
-                break;
-            case userMessage.startsWith('*guess'):
-                const guessedLetter = userMessage.split(' ')[1];
-                if (guessedLetter) {
-                    guessLetter(sock, chatId, guessedLetter);
-                } else {
-                    sock.sendMessage(chatId, { text: 'Please guess a letter using .guess <letter>',  }, { quoted: message });
-                }
-                break;
-            case userMessage.startsWith('*trivia'):
-                startTrivia(sock, chatId);
-                break;
-            case userMessage.startsWith('*answer'):
-                const answer = userMessage.split(' ').slice(1).join(' ');
-                if (answer) {
-                    answerTrivia(sock, chatId, answer);
-                } else {
-                    sock.sendMessage(chatId, { text: 'Please provide an answer using .answer <answer>',  }, { quoted: message });
-                }
                 break;
             case userMessage.startsWith('*compliment'):
                 await complimentCommand(sock, chatId, message);
@@ -732,27 +711,11 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage.startsWith('*insult'):
                 await insultCommand(sock, chatId, message);
                 break;
-            case userMessage.startsWith('*8ball'):
-                const question = userMessage.split(' ').slice(1).join(' ');
-                await eightBallCommand(sock, chatId, question);
-                break;
-            case userMessage.startsWith('*lyrics'):
-                const songTitle = userMessage.split(' ').slice(1).join(' ');
-                await lyricsCommand(sock, chatId, songTitle, message);
-                break;
-            case userMessage.startsWith('*simp'):
-                const quotedMsg = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-                const mentionedJid = message.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
-                await simpCommand(sock, chatId, quotedMsg, mentionedJid, senderId);
-                break;
             case userMessage.startsWith('*stupid') || userMessage.startsWith('*itssostupid') || userMessage.startsWith('*iss'):
                 const stupidQuotedMsg = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
                 const stupidMentionedJid = message.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
                 const stupidArgs = userMessage.split(' ').slice(1);
                 await stupidCommand(sock, chatId, stupidQuotedMsg, stupidMentionedJid, senderId, stupidArgs);
-                break;
-            case userMessage === '*dare':
-                await dareCommand(sock, chatId, message);
                 break;
             case userMessage === '*truth':
                 await truthCommand(sock, chatId, message);
