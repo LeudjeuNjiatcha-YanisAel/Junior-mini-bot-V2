@@ -915,17 +915,11 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage.startsWith('*music'):
                 await playCommand(sock, chatId, message);
                 break;
-            case userMessage.startsWith('*spotify'):
-                await spotifyCommand(sock, chatId, message);
-                break;
             case userMessage.startsWith('*play') || userMessage.startsWith('*mp3') || userMessage.startsWith('*ytmp3') || userMessage.startsWith('*song'):
                 await songCommand(sock, chatId, message);
                 break;
             case userMessage.startsWith('*video') || userMessage.startsWith('*ytmp4'):
                 await videoCommand(sock, chatId, message);
-                break;
-            case userMessage.startsWith('*tiktok') || userMessage.startsWith('*tt'):
-                await tiktokCommand(sock, chatId, message);
                 break;
             case userMessage.startsWith('*gpt') || userMessage.startsWith('*gemini') || userMessage.startsWith('*image'):
                 await aiCommand(sock, chatId, message);
@@ -946,12 +940,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case userMessage === '*goodnight' || userMessage === '*lovenight' || userMessage === '*gn':
                 await goodnightCommand(sock, chatId, message);
-                break;
-            case userMessage === '*shayari' || userMessage === '*shayri':
-                await shayariCommand(sock, chatId, message);
-                break;
-            case userMessage === '*roseday':
-                await rosedayCommand(sock, chatId, message);
                 break;
             case userMessage.startsWith('*imagine') || userMessage.startsWith('*flux') || userMessage.startsWith('*dalle'): await imagineCommand(sock, chatId, message);
                 break;
@@ -982,13 +970,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                     await miscCommand(sock, chatId, message, args);
                 }
                 break;
-            case userMessage.startsWith('*lgbt'):
-                {
-                    const parts = userMessage.trim().split(/\s+/);
-                    const args = ['lgbt', ...parts.slice(1)];
-                    await miscCommand(sock, chatId, message, args);
-                }
-                break;
             case userMessage.startsWith('*lolice'):
                 {
                     const parts = userMessage.trim().split(/\s+/);
@@ -1000,13 +981,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 {
                     const parts = userMessage.trim().split(/\s+/);
                     const args = ['simpcard', ...parts.slice(1)];
-                    await miscCommand(sock, chatId, message, args);
-                }
-                break;
-            case userMessage.startsWith('*tonikawa'):
-                {
-                    const parts = userMessage.trim().split(/\s+/);
-                    const args = ['tonikawa', ...parts.slice(1)];
                     await miscCommand(sock, chatId, message, args);
                 }
                 break;
