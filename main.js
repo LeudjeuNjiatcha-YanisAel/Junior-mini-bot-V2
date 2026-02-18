@@ -38,7 +38,6 @@ const ffmpeg = require('fluent-ffmpeg');
 const { isSudo } = require('./lib/index');
 const isOwnerOrSudo = require('./lib/isOwner');
 const { autotypingCommand, isAutotypingEnabled, handleAutotypingForMessage, handleAutotypingForCommand, showTypingAfterCommand } = require('./commands/autotyping');
-const { autoreadCommand, isAutoreadEnabled, handleAutoread } = require('./commands/autoread');
 
 // Command imports
 const tagAllCommand = require('./commands/tagall');
@@ -49,14 +48,12 @@ const muteCommand = require('./commands/mute');
 const unmuteCommand = require('./commands/unmute');
 const stickerCommand = require('./commands/sticker');
 const isAdmin = require('./lib/isAdmin');
-const warnCommand = require('./commands/warn');
 const warningsCommand = require('./commands/warnings');
 const ttsCommand = require('./commands/tts');
 const { tictactoeCommand, handleTicTacToeMove } = require('./commands/tictactoe');
 const { incrementMessageCount, topMembers } = require('./commands/topmembers');
 const ownerCommand = require('./commands/owner');
 const deleteCommand = require('./commands/delete');
-const { handleAntilinkCommand, handleLinkDetection } = require('./commands/antilink');
 const { handleAntitagCommand, handleTagDetection } = require('./commands/antitag');
 const { Antilink } = require('./lib/antilink');
 const { handleMentionDetection, mentionToggleCommand, setMentionCommand } = require('./commands/mention');
@@ -64,29 +61,21 @@ const tagCommand = require('./commands/tag');
 const tagNotAdminCommand = require('./commands/tagnotadmin');
 const hideTagCommand = require('./commands/hidetag');
 const kickCommand = require('./commands/kick');
-const simageCommand = require('./commands/simage');
-const { infoCommand } = require('./commands/info');
-const attpCommand = require('./commands/attp');
 const { complimentCommand } = require('./commands/compliment');
 const { insultCommand } = require('./commands/insult');
-const { truthCommand } = require('./commands/truth');
 const { clearCommand } = require('./commands/clear');
 const pingCommand = require('./commands/ping');
 const aliveCommand = require('./commands/alive');
 const { welcomeCommand, handleJoinEvent } = require('./commands/welcome');
 const { goodbyeCommand, handleLeaveEvent } = require('./commands/goodbye');
-const githubCommand = require('./commands/github');
 const { handleAntiBadwordCommand, handleBadwordDetection } = require('./lib/antibadword');
 const antibadwordCommand = require('./commands/antibadword');
 const { handleChatbotCommand, handleChatbotResponse } = require('./commands/chatbot');
 const takeCommand = require('./commands/take');
-const { flirtCommand } = require('./commands/flirt');
 const characterCommand = require('./commands/character');
 const wastedCommand = require('./commands/wasted');
 const shipCommand = require('./commands/ship');
 const groupInfoCommand = require('./commands/groupinfo');
-const resetlinkCommand = require('./commands/resetlink');
-const staffCommand = require('./commands/staff');
 const unbanCommand = require('./commands/unban');
 const emojimixCommand = require('./commands/emojimix');
 const { handlePromotionEvent } = require('./commands/promote');
@@ -101,23 +90,15 @@ const { handleAntideleteCommand, handleMessageRevocation, storeMessage } = requi
 const clearTmpCommand = require('./commands/cleartmp');
 const setProfilePicture = require('./commands/setpp');
 const { setGroupDescription, setGroupName, setGroupPhoto } = require('./commands/groupmanage');
-const instagramCommand = require('./commands/instagram');
 const playCommand = require('./commands/play');
-const tiktokCommand = require('./commands/tiktok');
 const {aiCommand,callGeminiOfficial} = require('./commands/ai');
-const urlCommand = require('./commands/url');
 const { handleTranslateCommand } = require('./commands/translate');
 const { handleSsCommand } = require('./commands/ss');
 const { reactToAllMessages, handleAreactCommand } = require('./lib/reactions');
 const { goodnightCommand } = require('./commands/goodnight');
-const { shayariCommand } = require('./commands/shayari');
 const imagineCommand = require('./commands/imagine');
 const sudoCommand = require('./commands/sudo');
-const { miscCommand, handleHeart } = require('./commands/misc');
-const { piesCommand, piesAlias } = require('./commands/pies');
-const stickercropCommand = require('./commands/stickercrop');
 const updateCommand = require('./commands/update');
-const { reminiCommand } = require('./commands/remini');
 const { igsCommand } = require('./commands/igs');
 const { anticallCommand, readState: readAnticallState } = require('./commands/anticall');
 const { pmblockerCommand, readState: readPmBlockerState } = require('./commands/pmblocker');
@@ -127,7 +108,6 @@ const onlineCommand = require('./commands/online');
 require('dotenv').config();
 const {capitalCommand,handleCapitalAnswer,stopCapitalGame,quitCapitalGame} = require('./commands/capital'); 
 const { games } = require('./commands/capital');
-const removeCommand = require('./commands/remove.js');
 const runSessionCommand = require('./commands/session.js');
 const { createRunwayVideo, waitForVideo } = require('./commands/runway');
 const {execute,handleSlam} = require('./commands/million');
@@ -771,9 +751,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 }
                 await staffCommand(sock, chatId, message);
                 break;
-            case userMessage.startsWith('*tourl') || userMessage.startsWith('*url'):
-                await urlCommand(sock, chatId, message);
-                break;
             case userMessage.startsWith('*emojimix') || userMessage.startsWith('*emix'):
                 await emojimixCommand(sock, chatId, message);
                 break;
@@ -797,17 +774,9 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage.startsWith('*ice'):
                 await textmakerCommand(sock, chatId, message, userMessage, 'ice');
                 break;
-            case userMessage.startsWith('*snow'):
-                await textmakerCommand(sock, chatId, message, userMessage, 'snow');
-                break;
-            
             case userMessage.startsWith('*getid'):
                 await sock.sendMessage(chatId, { text: `📌 Group ID: ${chatId}` });
                 break;
-            case userMessage.startsWith('*osint'):
-                await infoCommand(sock, chatId, message);
-                break;
-
             case userMessage.startsWith('*impressive'):
                 await textmakerCommand(sock, chatId, message, userMessage, 'impressive');
                 break;
@@ -863,13 +832,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case userMessage === '*cleartmp':
                 await clearTmpCommand(sock, chatId, message);
-                break;
-            case userMessage === '*adduser':
-                await addCommand({
-                    sock,
-                    msg: message,
-                    args
-                });
                 break;
             case userMessage === '*setpp':
                 await setProfilePicture(sock, chatId, message);
@@ -932,16 +894,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage.startsWith('*autoread'):
                 await autoreadCommand(sock, chatId, message);
                 commandExecuted = true;
-                break;
-            case userMessage.startsWith('*heart'):
-                await handleHeart(sock, chatId, message);
-                break;
-            case userMessage.startsWith('*horny'):
-                {
-                    const parts = userMessage.trim().split(/\s+/);
-                    const args = ['horny', ...parts.slice(1)];
-                    await miscCommand(sock, chatId, message, args);
-                }
                 break;
             case userMessage.startsWith('*update'):
                 {
