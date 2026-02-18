@@ -437,10 +437,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage.startsWith('*delete') || userMessage.startsWith('*del'):
                 await deleteCommand(sock, chatId, message, senderId);
                 break;
-            case userMessage.startsWith('*attp'):
-                await attpCommand(sock, chatId, message);
-                break;
-
             case userMessage === '*settings':
                 await settingsCommand(sock, chatId, message);
                 break;
@@ -696,13 +692,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 } else {
                     await sock.sendMessage(chatId, { text: 'This command can only be used in groups.',  }, { quoted: message });
                 }
-                break;
-            case userMessage === '*git':
-            case userMessage === '*github':
-            case userMessage === '*sc':
-            case userMessage === '*script':
-            case userMessage === '*repo':
-                await githubCommand(sock, chatId, message,args);
                 break;
             case userMessage.startsWith('*antibadword'):
                 if (!isGroup) {
