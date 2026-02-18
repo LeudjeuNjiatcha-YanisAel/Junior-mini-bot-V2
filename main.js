@@ -537,23 +537,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 const replyMessage = message.message?.extendedTextMessage?.contextInfo?.quotedMessage || null;
                 await tagCommand(sock, chatId, senderId, messageText, replyMessage, message);
                 break;
-            case userMessage.startsWith('*antilink'):
-                if (!isGroup) {
-                    await sock.sendMessage(chatId, {
-                        text: 'This command can only be used in groups.',
-                        
-                    }, { quoted: message });
-                    return;
-                }
-                if (!isBotAdmin) {
-                    await sock.sendMessage(chatId, {
-                        text: 'Please make the bot an admin first.',
-                        
-                    }, { quoted: message });
-                    return;
-                }
-                await handleAntilinkCommand(sock, chatId, userMessage, senderId, isSenderAdmin, message);
-                break;
             case userMessage.startsWith('*antitag'):
                 if (!isGroup) {
                     await sock.sendMessage(chatId, {
@@ -600,33 +583,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
 
                 }
                 break;
-            case userMessage === '*meme':
-                await memeCommand(sock, chatId, message);
-                break;
-            case userMessage === '*joke':
-                await jokeCommand(sock, chatId, message);
-                break;
-            case userMessage === '*quote':
-                await quoteCommand(sock, chatId, message);
-                break;
-            case userMessage === '*fact':
-                await factCommand(sock, chatId, message, message);
-                break;
-            case userMessage.startsWith('*weather'):
-                const city = userMessage.slice(9).trim();
-                if (city) {
-                    await weatherCommand(sock, chatId, message, city);
-                } else {
-                    await sock.sendMessage(chatId, { text: 'Please specify a city, e.g., .weather London',  }, { quoted: message });
-                }
-                break;
-            case userMessage === '*news':
-                await newsCommand(sock, chatId);
-                break;
-            case userMessage.startsWith('*accept') || userMessage.startsWith('*tictactoe'):
-                const tttText = userMessage.split(' ').slice(1).join(' ');
-                await tictactoeCommand(sock, chatId, senderId, tttText);
-                break;
             case userMessage === '*capital':
                 await capitalCommand(sock, chatId, senderId);
             break;
@@ -672,9 +628,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 const stupidMentionedJid = message.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
                 const stupidArgs = userMessage.split(' ').slice(1);
                 await stupidCommand(sock, chatId, stupidQuotedMsg, stupidMentionedJid, senderId, stupidArgs);
-                break;
-            case userMessage === '*truth':
-                await truthCommand(sock, chatId, message);
                 break;
             case userMessage === '*clear':
                 if (isGroup) await clearCommand(sock, chatId);
@@ -777,7 +730,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 // Check if sender is admin or bot owner
                 const chatbotAdminStatus = await isAdmin(sock, chatId, senderId);
                 if (!chatbotAdminStatus.isSenderAdmin && !message.key.fromMe) {
-                    await sock.sendMessage(chatId, { text: '*Seul administrateurs peut utiliser cette commande*',  }, { quoted: message });
+                    await sock.sendMessage(chatId, { text: 'Seul administrateurs peut utiliser cette commande*',  }, { quoted: message });
                     return;
                 }
 
@@ -803,28 +756,28 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case userMessage === '*ship':
                 if (!isGroup) {
-                    await sock.sendMessage(chatId, { text: 'This command can only be used in groups!',  }, { quoted: message });
+                    await sock.sendMessage(chatId, { text: '*Seul administrateurs peut utiliser cette commande*',  }, { quoted: message });
                     return;
                 }
                 await shipCommand(sock, chatId, message);
                 break;
             case userMessage === '*groupinfo' || userMessage === '*infogp' || userMessage === '*infogrupo':
                 if (!isGroup) {
-                    await sock.sendMessage(chatId, { text: 'This command can only be used in groups!',  }, { quoted: message });
+                    await sock.sendMessage(chatId, { text: '*Seul administrateurs peut utiliser cette commande*',  }, { quoted: message });
                     return;
                 }
                 await groupInfoCommand(sock, chatId, message);
                 break;
             case userMessage === '*resetlink' || userMessage === '*revoke' || userMessage === '*anularlink':
                 if (!isGroup) {
-                    await sock.sendMessage(chatId, { text: 'This command can only be used in groups!',  }, { quoted: message });
+                    await sock.sendMessage(chatId, { text: '*Seul administrateurs peut utiliser cette commande*',  }, { quoted: message });
                     return;
                 }
                 await resetlinkCommand(sock, chatId, senderId);
                 break;
             case userMessage === '*staff' || userMessage === '*admins' || userMessage === '*listadmin':
                 if (!isGroup) {
-                    await sock.sendMessage(chatId, { text: 'This command can only be used in groups!',  }, { quoted: message });
+                    await sock.sendMessage(chatId, { text: '*Seul administrateurs peut utiliser cette commande*',  }, { quoted: message });
                     return;
                 }
                 await staffCommand(sock, chatId, message);
