@@ -386,16 +386,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
         }
 
         switch (true) { 
-            case userMessage === '*simage': {
-                const quotedMessage = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-                if (quotedMessage?.stickerMessage) {
-                    await simageCommand(sock, quotedMessage, chatId);
-                } else {
-                    await sock.sendMessage(chatId, { text: 'Please reply to a sticker with the .simage command to convert it.',  }, { quoted: message });
-                }
-                commandExecuted = true;
-                break;
-            }
             case userMessage.startsWith('*kick'):
                 const mentionedJidListKick = message.message.extendedTextMessage?.contextInfo?.mentionedJid || [];
                 await kickCommand(sock, chatId, senderId, mentionedJidListKick, message);
@@ -414,15 +404,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case userMessage === '*unmute':
                 await unmuteCommand(sock, chatId, senderId);
-                break;
-            case userMessage.startsWith('*ban'):
-                if (!isGroup) {
-                    if (!message.key.fromMe && !senderIsSudo) {
-                        await sock.sendMessage(chatId, { text: 'Only owner/sudo can use .ban in private chat.' }, { quoted: message });
-                        break;
-                    }
-                }
-                await banCommand(sock, chatId, message);
                 break;
             case userMessage.startsWith('*unban'):
                 if (!isGroup) {
@@ -519,7 +500,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case userMessage.startsWith('*anticall'):
                 if (!message.key.fromMe && !senderIsOwnerOrSudo) {
-                    await sock.sendMessage(chatId, { text: 'Only owner/sudo can use anticall.' }, { quoted: message });
+                    await sock.sendMessage(chatId, { text: 'Seul le owner/sudo peut utiliser anticall.' }, { quoted: message });
                     break;
                 }
                 {
