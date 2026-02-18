@@ -536,7 +536,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage.startsWith('*antitag'):
                 if (!isGroup) {
                     await sock.sendMessage(chatId, {
-                        text: 'This command can only be used in groups.',
+                        text: '*Seul administrateurs peut utiliser cette commande*',
                         
                     }, { quoted: message });
                     return;
@@ -871,12 +871,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                     args
                 });
                 break;
-            case userMessage === '*removeuser':
-                await removeCommand(sock, chatId, message);
-                break;
-            case userMessage === '*transcribe':
-               // await transfertCommand(sock, chatId, message);
-                break;
             case userMessage === '*setpp':
                 await setProfilePicture(sock, chatId, message);
                 break;
@@ -894,9 +888,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case userMessage.startsWith('*setgpp'):
                 await setGroupPhoto(sock, chatId, senderId, message);
-                break;
-            case userMessage.startsWith('*igsc'):
-                await igsCommand(sock, chatId, message, true);
                 break;
             case userMessage.startsWith('*igs'):
                 await igsCommand(sock, chatId, message, false);
@@ -1011,50 +1002,12 @@ async function handleMessages(sock, messageUpdate, printLog) {
                     await miscCommand(sock, chatId, message, args);
                 }
                 break;
-            case userMessage.startsWith('*comrade'):
-            case userMessage.startsWith('*gay'):
-            case userMessage.startsWith('*glass'):
-            case userMessage.startsWith('*jail'):
-            case userMessage.startsWith('*passed'):
-            case userMessage.startsWith('*triggered'):
-                {
-                    const parts = userMessage.trim().split(/\s+/);
-                    const sub = userMessage.slice(1).split(/\s+/)[0];
-                    const args = [sub, ...parts.slice(1)];
-                    await miscCommand(sock, chatId, message, args);
-                }
-                break;
             case userMessage.startsWith('*animu'):
                 {
                     const parts = userMessage.trim().split(/\s+/);
                     const args = parts.slice(1);
                     await animeCommand(sock, chatId, message, args);
                 }
-                break;
-            // animu aliases
-            case userMessage.startsWith('*nom'):
-            case userMessage.startsWith('*poke'):
-            case userMessage.startsWith('*cry'):
-            case userMessage.startsWith('*kiss'):
-            case userMessage.startsWith('*pat'):
-            case userMessage.startsWith('*hug'):
-            case userMessage.startsWith('*wink'):
-            case userMessage.startsWith('*facepalm'):
-            case userMessage.startsWith('*face-palm'):
-            case userMessage.startsWith('*animuquote'):
-            case userMessage.startsWith('*quote'):
-            case userMessage.startsWith('*loli'):
-                {
-                    const parts = userMessage.trim().split(/\s+/);
-                    let sub = parts[0].slice(1);
-                    if (sub === 'facepalm') sub = 'face-palm';
-                    if (sub === 'quote' || sub === 'animuquote') sub = 'quote';
-                    await animeCommand(sock, chatId, message, [sub]);
-                }
-                break;
-            case userMessage === '*crop':
-                await stickercropCommand(sock, chatId, message);
-                commandExecuted = true;
                 break;
             case userMessage.startsWith('*pies'):
                 {
