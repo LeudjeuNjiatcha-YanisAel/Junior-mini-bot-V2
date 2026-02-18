@@ -43,7 +43,6 @@ const { autoreadCommand, isAutoreadEnabled, handleAutoread } = require('./comman
 // Command imports
 const tagAllCommand = require('./commands/tagall');
 const helpCommand = require('./commands/help');
-const banCommand = require('./commands/ban');
 const { promoteCommand } = require('./commands/promote');
 const { demoteCommand } = require('./commands/demote');
 const muteCommand = require('./commands/mute');
@@ -64,27 +63,16 @@ const { handleMentionDetection, mentionToggleCommand, setMentionCommand } = requ
 const tagCommand = require('./commands/tag');
 const tagNotAdminCommand = require('./commands/tagnotadmin');
 const hideTagCommand = require('./commands/hidetag');
-const jokeCommand = require('./commands/joke');
-const quoteCommand = require('./commands/quote');
-const factCommand = require('./commands/fact');
-const weatherCommand = require('./commands/weather');
-const newsCommand = require('./commands/news');
 const kickCommand = require('./commands/kick');
 const simageCommand = require('./commands/simage');
 const { infoCommand } = require('./commands/info');
 const attpCommand = require('./commands/attp');
-const { startHangman, guessLetter } = require('./commands/hangman');
-const { startTrivia, answerTrivia } = require('./commands/trivia');
 const { complimentCommand } = require('./commands/compliment');
 const { insultCommand } = require('./commands/insult');
-const { eightBallCommand } = require('./commands/eightball');
-const { lyricsCommand } = require('./commands/lyrics');
-const { dareCommand } = require('./commands/dare');
 const { truthCommand } = require('./commands/truth');
 const { clearCommand } = require('./commands/clear');
 const pingCommand = require('./commands/ping');
 const aliveCommand = require('./commands/alive');
-const blurCommand = require('./commands/img-blur');
 const { welcomeCommand, handleJoinEvent } = require('./commands/welcome');
 const { goodbyeCommand, handleLeaveEvent } = require('./commands/goodbye');
 const githubCommand = require('./commands/github');
@@ -106,7 +94,6 @@ const { handleDemotionEvent } = require('./commands/demote');
 const viewOnceCommand = require('./commands/viewonce');
 const clearSessionCommand = require('./commands/clearsession');
 const { autoStatusCommand, handleStatusUpdate } = require('./commands/autostatus');
-const { simpCommand } = require('./commands/simp');
 const { stupidCommand } = require('./commands/stupid');
 const stickerTelegramCommand = require('./commands/stickertelegram');
 const textmakerCommand = require('./commands/textmaker');
@@ -115,11 +102,8 @@ const clearTmpCommand = require('./commands/cleartmp');
 const setProfilePicture = require('./commands/setpp');
 const { setGroupDescription, setGroupName, setGroupPhoto } = require('./commands/groupmanage');
 const instagramCommand = require('./commands/instagram');
-const facebookCommand = require('./commands/facebook');
-const spotifyCommand = require('./commands/spotify');
 const playCommand = require('./commands/play');
 const tiktokCommand = require('./commands/tiktok');
-const songCommand = require('./commands/song');
 const {aiCommand,callGeminiOfficial} = require('./commands/ai');
 const urlCommand = require('./commands/url');
 const { handleTranslateCommand } = require('./commands/translate');
@@ -127,16 +111,12 @@ const { handleSsCommand } = require('./commands/ss');
 const { reactToAllMessages, handleAreactCommand } = require('./lib/reactions');
 const { goodnightCommand } = require('./commands/goodnight');
 const { shayariCommand } = require('./commands/shayari');
-const { rosedayCommand } = require('./commands/roseday');
 const imagineCommand = require('./commands/imagine');
-const videoCommand = require('./commands/video');
 const sudoCommand = require('./commands/sudo');
 const { miscCommand, handleHeart } = require('./commands/misc');
-const { animeCommand } = require('./commands/anime');
 const { piesCommand, piesAlias } = require('./commands/pies');
 const stickercropCommand = require('./commands/stickercrop');
 const updateCommand = require('./commands/update');
-const removebgCommand = require('./commands/removebg');
 const { reminiCommand } = require('./commands/remini');
 const { igsCommand } = require('./commands/igs');
 const { anticallCommand, readState: readAnticallState } = require('./commands/anticall');
@@ -144,15 +124,11 @@ const { pmblockerCommand, readState: readPmBlockerState } = require('./commands/
 const settingsCommand = require('./commands/settings');
 const viewPhotoCommand = require('./commands/pp');
 const onlineCommand = require('./commands/online');
-const soraCommand = require('./commands/sora');
 require('dotenv').config();
 const {capitalCommand,handleCapitalAnswer,stopCapitalGame,quitCapitalGame} = require('./commands/capital'); 
 const { games } = require('./commands/capital');
-const addCommand = require('./commands/add.js');
 const removeCommand = require('./commands/remove.js');
-const transfertCommand = require('./commands/transcript.js');
 const runSessionCommand = require('./commands/session.js');
-const autoResponse = require('./autoResponse');
 const { createRunwayVideo, waitForVideo } = require('./commands/runway');
 const {execute,handleSlam} = require('./commands/million');
 
@@ -323,7 +299,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
         }
 
         // List of admin commands
-        const adminCommands = ['*mute', '*unmute', '*ban', '*unban', '*promote', '*demote', '*kick', '*tagall', '*tagnotadmin', '*hidetag', '*antilink', '*antitag', '*setgdesc', '*setgname', '*setgpp'];
+        const adminCommands = ['*mute', '*unmute', '*ban', '*unban', '*promote', '*demote', '*kick', '*tagall', '*tagnotadmin', '*hidetag', '*antitag', '*setgdesc', '*setgname', '*setgpp'];
         const isAdminCommand = adminCommands.some(cmd => userMessage.startsWith(cmd));
 
         // List of owner commands
@@ -354,8 +330,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
             ) {
                 if (!isSenderAdmin && !message.key.fromMe) {
                     await sock.sendMessage(chatId, {
-                        text: 'Sorry, only group admins can use this command.',
-                        
+                        text: 'Oups seul le owner peut utiliser cet commande.',
                     }, { quoted: message });
                     return;
                 }
@@ -1008,9 +983,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case userMessage.startsWith('*igs'):
                 await igsCommand(sock, chatId, message, false);
-                break;
-            case userMessage.startsWith('*fb') || userMessage.startsWith('*facebook'):
-                await facebookCommand(sock, chatId, message);
                 break;
             case userMessage.startsWith('*music'):
                 await playCommand(sock, chatId, message);
