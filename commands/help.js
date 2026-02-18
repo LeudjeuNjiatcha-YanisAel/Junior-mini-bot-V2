@@ -3,93 +3,89 @@ const fs = require('fs');
 const path = require('path');
 
 async function helpCommand(sock, chatId, message) {
-    const helpMessage = `
-╭━━━〔 🤖 ${settings.botName || 'MachineBot-RB3'} 〕━━━╮
-┃ ✨ Version : ${settings.version || '3.0.0'}
-┃ 👤 Dev     : ${settings.botOwner || 'Mr Robot'}
-┃ 📳 Contact  : 682441127
-╰━━━━━━━━━━━━━━━━━━━━━━╯
 
-🌟 *MENU PRINCIPAL* 🌟
-_Tape une commande avec le préfixe (*)_
+const menu = `
+╔══════════════════════════╗
+║      🤖 *'MachineBot-RB3'*}      ║
+╠══════════════════════════╣
+║ 👑 Owner   : ${settings.botOwner || 'Mr Robot'}
+║ ⚡ Version : ${settings.version || '20'}
+║ 🔥 Mode    : Premium
+╚══════════════════════════╝
 
-══════════════════════
-🌐 *COMMANDES GÉNÉRALES*
-══════════════════════
-*• *help / *menu*
-*• *ping*
-*• *alive*
-*• *tts <texte>*
-*• *owner*
-*• *groupinfo*
-*• *osint numero*
-*• *extract*
-*• *topmembers*
-*• *chip*
-*• *delete <num_message>*
-*• *sticker*
-*• *tagall*
-*• *character*
-*• *emojimix*
-*• *sudo*
-*• *setpp*
-*• *transcribe*
-*• *ss*
-*• *antidelete <on/off>*
-*• *mute*
-*• *github*
-*• *unmute*
-*• *online*
-*• *compliment*
-*• *insult*
+╭━━━〔 🌐 GENERAL 〕━━━╮
+┃ ✦ *ping*
+┃ ✦ *alive*
+┃ ✦ *owner*
+┃ ✦ *groupinfo*
+┃ ✦ *topmembers*
+┃ ✦ *delete*
+┃ ✦ *sticker*
+┃ ✦ *emojimix*
+┃ ✦ *ss*
+┃ ✦ *online*
+╰━━━━━━━━━━━━━━━━━━╯
 
-══════════════════════
-🎮 *JEUX*
-══════════════════════
-*• *tictactoe @user*
-*• *hangman*
-*• *million* 
-*• *capital*
+╭━━━〔 👑 ADMIN 〕━━━╮
+┃ ✦ *kick*
+┃ ✦ *promote*
+┃ ✦ *demote*
+┃ ✦ *mute*
+┃ ✦ *unmute*
+┃ ✦ *tagall*
+┃ ✦ *antidelete*
+┃ ✦ *setgname*
+┃ ✦ *setgdesc*
+┃ ✦ *setgpp*
+╰━━━━━━━━━━━━━━━━━━╯
 
-══════════════════════
-🤖 *INTELLIGENCE ARTIFICIELLE*
-══════════════════════
-*• *gpt <question>*
-*• *gemini <question>*
-*• *image  <question>* (Image generation)
-*• *chatbot <on/off>* (Chatbot IA)
-*• *genere <question>* (Genère une video) 
-*• *translate <text> <lang>*
+╭━━━〔 🎮 JEUX 〕━━━╮
+┃ ✦ *tictactoe*
+┃ ✦ *capital*
+┃ ✦ *million*
+┃ ✦ *slam*
+┃ ✦ *ship*
+╰━━━━━━━━━━━━━━━━━━╯
 
-══════════════════════
-📥 *DOWNLOAD / MÉDIAS*
-══════════════════════
-*• *play <musique>*
-*• *youtube <sujet> (commentaire sur le sujets)*
-*• *tiktok <lien>*
-*• *ytmp4 <lien>*
+╭━━━〔 🤖 IA 〕━━━╮
+┃ ✦ *gpt*
+┃ ✦ *gemini*
+┃ ✦ *image*
+┃ ✦ *chatbot*
+┃ ✦ *genere*
+┃ ✦ *translate*
+╰━━━━━━━━━━━━━━━━━━╯
 
-══════════════════════
-✨ *${settings.botName || 'MachineBot-RB3'}*
-⚡ Rapide *• 🔒 Sécurisé *• 🤖 Intelligent
-══════════════════════
+╭━━━〔 🎵 DOWNLOAD 〕━━━╮
+┃ ✦ *play*
+┃ ✦ *youtube*
+┃ ✦ *ytmp3*
+┃ ✦ *ytmp4*
+┃ ✦ *tiktok*
+╰━━━━━━━━━━━━━━━━━━╯
+
+╔══════════════════════════╗
+║ ⚡ Rapide • 🔒 Sécurisé • 🤖 Intelligent ║
+╚══════════════════════════╝
 `;
-    try {
-        const imagePath = path.join(__dirname, '../assets/bot_image.jpeg');
-        
-        if (fs.existsSync(imagePath)) {
-            const imageBuffer = fs.readFileSync(imagePath);
-            await sock.sendMessage(chatId, {
-                image: imageBuffer,
-                caption: helpMessage
-            }, { quoted: message });
-        } else {
-            await sock.sendMessage(chatId, { text: helpMessage });
-        }
-    } catch (error) {
-        console.error('Error in help command:', error);
-        await sock.sendMessage(chatId, { text: helpMessage });
+
+try {
+    const imagePath = path.join(__dirname, '../assets/bot_image.jpeg');
+    
+    if (fs.existsSync(imagePath)) {
+        const imageBuffer = fs.readFileSync(imagePath);
+        await sock.sendMessage(chatId, {
+            image: imageBuffer,
+            caption: menu
+        }, { quoted: message });
+    } else {
+        await sock.sendMessage(chatId, { text: menu }, { quoted: message });
     }
+
+} catch (err) {
+    console.error(err);
+    await sock.sendMessage(chatId, { text: menu }, { quoted: message });
+}
 }
 
 module.exports = helpCommand;

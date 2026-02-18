@@ -1,4 +1,5 @@
 require('./settings')
+const { updateQR, updateStatus } = require('./web/server')
 require('dotenv').config();
 const { Boom } = require('@hapi/boom')
 const fs = require('fs')
@@ -255,6 +256,17 @@ async function startXeonBotInc() {
                 await delay(5000)
                 startXeonBotInc()
             }
+            global.generatePairingCode = async (number) => {
+            try {
+                number = number.replace(/[^0-9]/g, '')
+                let code = await XeonBotInc.requestPairingCode(number)
+                return code?.match(/.{1,4}/g)?.join("-") || code
+            } catch {
+                return "Erreur génération"
+            }
+        }
+
+
         })
 
         return XeonBotInc

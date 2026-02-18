@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Machine Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<h1>🤖 MACHINE VB3</h1>
+
+<div class="status" id="statusIndicator">
+    🔴 Déconnecté
+</div>
+
+<div class="stats">
+    <div class="card">
+        <h3>RAM</h3>
+        <p id="ram">0</p>
+    </div>
+    <div class="card">
+        <h3>Uptime (min)</h3>
+        <p id="uptime">0</p>
+    </div>
+    <div class="card">
+        <h3>CPU</h3>
+        <p id="cpu">0</p>
+    </div>
+</div>
+
+<h2>Authentification</h2>
+
+<button onclick="showQR()">QR</button>
+<button onclick="showCode()">Code</button>
+
+<div id="authArea"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
